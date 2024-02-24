@@ -15,7 +15,7 @@ class Producto(models.Model):
     descripcion = models.CharField(max_length=255)
     precio = models.DecimalField(max_digits=12, decimal_places=2)
     stock_disponible = models.IntegerField()
-    fecha_creacion = models.DateField()
+    fecha_creacion = models.DateField(auto_now_add=True)
     proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -24,7 +24,7 @@ class Producto(models.Model):
 class Compra(models.Model):
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
     cantidad = models.IntegerField()
-    fecha_compra = models.DateField()
+    fecha_compra = models.DateField(auto_now_add=True)
     total = models.DecimalField(max_digits=12, decimal_places=2)
 
     def __str__(self):

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle compra</title>
+</head>
+<body>
+    <h1>Hola desde compras</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ form }}
+        <button>Save</button>
+    </form>
+
+    <form action="{% url 'eliminarCompra' compra.id %}" method="POST">
+        {% csrf_token %}
+        <button>
+            Eliminar
+        </button>
+    </form>
+
+</body>
+</html>

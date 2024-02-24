@@ -2,5 +2,8 @@ from django.urls import path, include
 from .views import *
 
 urlpatterns = [
-    path('', compras, name='compras')
+    path('', index, name='compras'),
+    path('registrarCompra', registrarCompra, name='registrarCompra'),
+    path('detalleCompra/<int:id>', verDetalleCompra, name='detalleCompra'),
+    path('detalleCompra/<int:id>/eliminarCompra', eliminarCompra, name='eliminarCompra'),
 ]
