@@ -58,10 +58,25 @@ def verDetalleCompra(request, id):
         return render(request, 'compras/detalleCompra.html', {"compra": compra, "form": form})
     else:
         try:
+            comprainit=get_object_or_404(Compra, pk=id)
             compra=get_object_or_404(Compra, pk=id)
+            producto = compra.producto
+            cant1=comprainit.cantidad
             form = CompraForm(request.POST, instance=compra)
             if form.is_valid():
                 compra.save()
+                cant2= compra.cantidad
+                cantidad=cant2-cant1
+
+                if cant2>cant1:
+                    producto.stock_disponible += int(cantidad)
+                    producto.save()
+                elif cant2<cant1:
+                    producto.stock_disponible -= abs(cantidad)
+                    producto.save()
+                else:
+                    pass
+
                 return redirect('compras')
         except ValueError:
             return render(request, 'compras',{
@@ -71,5 +86,7 @@ def verDetalleCompra(request, id):
 
 def eliminarCompra(request, id):
     compra = get_object_or_404(Compra, id=id)
+    producto = compra.producto
+    producto.stock_disponible -= int(compra.cantidad)
     compra.delete()
     return redirect('compras')
