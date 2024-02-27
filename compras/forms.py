@@ -1,6 +1,6 @@
-from django.forms import forms, ModelForm
+from django.forms import ModelForm
 
-from .models import *
+from compras.models import *
 
 class CompraForm(ModelForm):
     class Meta:

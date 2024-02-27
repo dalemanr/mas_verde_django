@@ -1,7 +1,9 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 
 from .forms import CompraForm
-from .models import *
+
+from compras.models import *
 # Create your views here.
 
 ####################CRUD PRODUCTOS#######################
@@ -36,11 +38,13 @@ from .models import *
 
 ########################CRUD COMPRAS##########################
 
+@login_required
 def index(request):
     compras = Compra.objects.all()
     form = CompraForm()
     return render(request, "compras/compras.html", {"compras": compras, "form": form})
 
+@login_required
 def registrarCompra(request):
     compra = Compra.objects.create(producto_id = request.POST['producto'],
                                    cantidad = request.POST['cantidad'],
@@ -51,6 +55,7 @@ def registrarCompra(request):
     producto.save()
     return redirect('compras')
 
+@login_required
 def verDetalleCompra(request, id):
     if request.method == 'GET':
         compra=get_object_or_404(Compra, pk=id)
@@ -83,7 +88,7 @@ def verDetalleCompra(request, id):
                 'error': "error editando la compra"
             })
 
-
+@login_required
 def eliminarCompra(request, id):
     compra = get_object_or_404(Compra, id=id)
     producto = compra.producto
