@@ -1,4 +1,6 @@
 from django.contrib.auth import logout
+from django.contrib.auth.decorators import user_passes_test
+
 from .forms import *
 from django.shortcuts import render
 from django.views.generic import CreateView
@@ -6,6 +8,14 @@ from django.urls import reverse_lazy
 from django import forms
 
 # Create your views here.
+
+def group_required(*group_names):
+    def in_groups(user):
+        if user.groups.filter(name__in=group_names).exists():
+            return True
+        return False
+    return user_passes_test(in_groups)
+
 class RegistrationView(CreateView):
     form_class = UserCreationFormWithEmail
     template_name = 'registration/signup.html'
