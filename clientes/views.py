@@ -1,14 +1,19 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from .models import Clientes
 from django.contrib import messages
-
+from registration.views import group_required
 
 ###########CRUD CLIENTES####################
 
+@group_required('Vendedor')
 def index(request):
-    clientelistado= Clientes.objects.all()
-    messages.success(request, '¡Clientes Listados!')
-    return render(request, "gestionC.html", {"clientes":clientelistado})
+    if group_required('Vendedor'):
+        clientelistado = Clientes.objects.all()
+        messages.success(request, '¡Clientes Listados!')
+        return render(request, "gestionC.html", {"clientes": clientelistado})
+    else:
+        return HttpResponseRedirect('Mal ahí, no tenes permiso de acceder aqui raton')
 
 def registrarCliente(request):
  if request.method == 'POST':
