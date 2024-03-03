@@ -1,0 +1,41 @@
+{% extends "baseProductos.html" %}
+
+{% block contenido %}  
+
+<div class="row">
+    <div class="col-md-4 offset-md-4">
+        <h2>Editar Productos</h2>
+        <div class="card">
+            <div class="card-body">
+                <form action="{% url 'edicionProductos' producto.id %}" method="POST">{% csrf_token %}
+                    <div class="form-group">
+                        <input type="text" id="txtNombre" name="txtNombre" value="{{ producto.nombre }}" class="form-control" placeholder="Nombre" minlength="2" maxlength="1" readonly required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="txtDescripcion" name="txtDescripcion" value="{{ producto.descripcion }}" class="form-control" placeholder="Descripcion"  maxlength="250" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="number" id="txtPrecio" name="txtPrecio" value="{{ producto.precio }}" class="form-control" placeholder="Precio" step="0.01" min="0.01" required>
+                    </div>                    
+                    <div class="form-group">
+                        <input type="number" id="txtStock_Disponible" name="txtStock_Disponible" value="{{ producto.stock_disponible }}" class="form-control" placeholder="Stock Disponible" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="date" id="txtFecha_Creacion" name="txtFecha_Creacion" value="{{ producto.fecha_creacion }}" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <select id="txtProveedor" name="txtProveedor" value="{{ producto.proveedor }}" class="form-control" required>
+                            <option value="" disabled selected>Selecciona un proveedor</option>
+                            <!-- Aquí se deben cargar las opciones de proveedores dinámicamente -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success btn-block text-white">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

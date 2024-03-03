@@ -1,0 +1,35 @@
+{% extends "baseClientes.html" %}
+
+{% block contenido %}
+
+<div class="row">
+    <div class="col-md-4 offset-md-4">
+        <h2>Editar Cliente</h2>
+        <div class="card">
+            <div class="card-body">
+                <form action="{% url 'edicionClientes' clientes.id %}" method="POST">{% csrf_token %}
+                    <div class="form-group">
+                        <input type="text" id="txtNombre" name="txtNombre" value="{{ clientes.nombre }}" class="form-control" placeholder="Nombre" maxlength="50" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="txtApellido" name="txtApellido" value="{{ clientes.apellido }}" class="form-control" placeholder="Apellido"  maxlength="50" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="txtDocumento" name="txtDocumento" value="{{ clientes.documento }}" class="form-control" placeholder="Documento" maxlength="50" required>
+                    </div>                    
+                    <div class="form-group">
+                        <input type="text" id="txtTelefono" name="txtTelefono" value="{{ clientes.telefono }}" class="form-control" placeholder="Telefono" maxlength="10" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="txtCorreo" name="txtCorreo" value="{{ clientes.correo }}" class="form-control" placeholder="Correo" maxlength="100" required>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success btn-block text-white">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
