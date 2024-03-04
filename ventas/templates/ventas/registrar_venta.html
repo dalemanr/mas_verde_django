@@ -1,0 +1,36 @@
+<!-- ventas/registrar_venta.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrar Venta</title>
+</head>
+<body>
+    <h1>Registrar Venta</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ venta_form.as_p }}
+
+        <!-- Detalle de la venta -->
+        <h2>Detalle de la Venta</h2>
+        {{ detalle_venta_formset.management_form }}
+        <table>
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for detalle_form in detalle_venta_formset %}
+                <tr>
+                    <td>{{ detalle_form.producto }}</td>
+                    <td>{{ detalle_form.cantidad }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <input type="submit" value="Registrar Venta">
+    </form>
+</body>
+</html>
