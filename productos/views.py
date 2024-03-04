@@ -8,8 +8,10 @@ from django.contrib import messages
 
 def index(request):
     productoListados= Producto.objects.all()
+    proveedores= Proveedor.objects.all()
     messages.success(request, '¡Productos Listados!')
-    return render(request, "gestionP.html", {"productos": productoListados})
+    return render(request, "gestionP.html", {"productos": productoListados,
+                                             "proveedores": proveedores,})
 
 def registrarProducto(request):
  if request.method == 'POST':
@@ -20,16 +22,18 @@ def registrarProducto(request):
     fecha_creacion=request.POST['txtFecha_Creacion']
     proveedor=request.POST['txtProveedor']
     
-    producto = Producto.objects.create(nombre=nombre,descripcion=descripcion,precio=precio,stock_disponible=stock_disponible,fecha_creacion=fecha_creacion,proveedor=proveedor)
+    producto = Producto.objects.create(nombre=nombre,descripcion=descripcion,precio=precio,stock_disponible=stock_disponible,proveedor_id=proveedor)
     messages.success(request, '¡Producto Registrado!')
     return redirect('productos')
  else: 
      
      return render(request, 'gestionP.html')
 
-def editarProducto(request, nombre):
-    producto=Producto.objects.get(nombre=nombre)
-    return render(request, "editarProducto.html", {"producto":producto})
+def editarProducto(request, id):
+    producto=Producto.objects.get(id=id)
+    proveedores= Proveedor.objects.all()
+    return render(request, "editarProducto.html", {"producto":producto,
+                                                   "proveedores": proveedores})
 
 def edicionProducto(request,id):
     if request.method == 'POST':
@@ -45,7 +49,7 @@ def edicionProducto(request,id):
         producto.precio = precio
         producto.stock_disponible = stock_disponible
         producto.fecha_creacion = fecha_creacion
-        producto.proveedor = proveedor
+        producto.proveedor_id = proveedor
         producto.save()
         messages.success(request, '¡Producto Editado!')
         return redirect('productos')

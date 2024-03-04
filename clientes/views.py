@@ -6,7 +6,7 @@ from registration.views import group_required
 
 ###########CRUD CLIENTES####################
 
-@group_required('Vendedor')
+#@group_required('Vendedor')
 def index(request):
     if group_required('Vendedor'):
         clientelistado = Clientes.objects.all()

@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Detalle compra</title>
-</head>
-<body>
-    <h1>Hola desde compras</h1>
+{% extends 'baseAccounts.html' %}
+
+{% block tittle %} Bloc {% endblock %}
+
+{% block content %}
 
     <form method="POST">
         {% csrf_token %}
@@ -22,3 +19,5 @@
 
 </body>
 </html>
+
+{% endblock %}

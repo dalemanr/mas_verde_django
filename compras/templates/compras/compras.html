@@ -1,0 +1,40 @@
+{% extends "baseForms.html" %}
+
+{% block namePage %} Gestion de Compras {% endblock %}
+
+{% block title %} Registrar Compras {% endblock %}
+
+{% block form %}
+<form action="{% url 'registrarCompra' %}" method="POST">
+    {% csrf_token %}
+    {{ form }}
+    <button>Save</button>
+</form>
+{% endblock %}
+
+{% block table_title %} compras {% endblock %}
+
+{% block table %}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Total</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for c in compras %}
+        <tr>
+            <td>{{ c.producto}}</td>
+            <td>{{ c.cantidad}}</td>
+            <td>{{ c.total}}</td>
+            <td><a class="btn btn-info" href="{% url 'detalleCompra' c.id %}">Ver</a>
+            <a class="btn btn-danger" href="{% url 'eliminarCompra' c.id %}" onclick="return confirm('¿Está seguro de querer eliminar el registro?')">eliminar</a></td>
+
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

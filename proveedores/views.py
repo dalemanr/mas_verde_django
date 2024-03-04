@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
 from compras.models import Proveedor
 from .forms import ProveedorForm
+from registration.views import group_required
 
+@group_required("Administrador")
 def item_list(request):
     items = Proveedor.objects.all()
     return render(request, 'proveedores/item_list.html', {'items': items})

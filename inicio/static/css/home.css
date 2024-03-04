@@ -1,0 +1,28 @@
+/* Tu CSS va aquí */
+.navbar {
+    background-color: #82b74b !important;
+}
+
+.navbar-brand {
+    color: #fff !important;
+}
+
+.navbar-brand:hover,
+.nav-link:hover {
+    color: #f8f9fa !important;
+}
+
+.jumbotron {
+    background-color: #dff0d8;
+    padding: 4rem 2rem;
+    margin-bottom: 2rem;
+    border-radius: 1rem;
+}
+
+.footer {
+    background-color: #82b74b;
+    color: #fff;
+    text-align: center;
+    padding: 1rem 0;
+}
+

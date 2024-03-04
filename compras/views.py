@@ -92,6 +92,8 @@ def verDetalleCompra(request, id):
 def eliminarCompra(request, id):
     compra = get_object_or_404(Compra, id=id)
     producto = compra.producto
-    producto.stock_disponible -= int(compra.cantidad)
+    cantidad = compra.cantidad
+    producto.stock_disponible -= int(cantidad)
+    producto.save()
     compra.delete()
     return redirect('compras')

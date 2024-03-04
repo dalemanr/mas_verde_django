@@ -1,6 +1,8 @@
-{% extends "baseProductos.html" %}
+{% extends 'baseAccounts.html' %}
 
-{% block contenido %}  
+{% block tittle %} Editar Productos {% endblock %}
+
+{% block content %}
 
 <div class="row">
     <div class="col-md-4 offset-md-4">
@@ -24,11 +26,13 @@
                         <input type="date" id="txtFecha_Creacion" name="txtFecha_Creacion" value="{{ producto.fecha_creacion }}" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <select id="txtProveedor" name="txtProveedor" value="{{ producto.proveedor }}" class="form-control" required>
-                            <option value="" disabled selected>Selecciona un proveedor</option>
-                            <!-- Aquí se deben cargar las opciones de proveedores dinámicamente -->
+                        <select id="txtProveedor" name="txtProveedor" value="{{ producto.prov }}" class="form-control" required>
+                            <option value="#" disabled selected>Selecciona un proveedor</option>
+                            {% for proveedor in proveedores %}
+                                <option value="{{ proveedor.id }}">{{ proveedor.nombre }}</option>
+                            {% endfor %}
                         </select>
-                    </div>
+                    </div> 
                     <div class="form-group">
                         <button type="submit" class="btn btn-success btn-block text-white">Guardar</button>
                     </div>
