@@ -13,19 +13,22 @@ class Proveedor(models.Model):
 class Producto(models.Model):
     nombre = models.CharField(max_length=100)
     descripcion = models.CharField(max_length=255)
-    precio = models.DecimalField(max_digits=12, decimal_places=2)
-    stock_disponible = models.IntegerField()
+    precio = models.IntegerField(null=True, blank=True, default=0)
+    stock_disponible = models.IntegerField(default=0)
     fecha_creacion = models.DateField(auto_now_add=True)
     proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE)
+    imagen = models.ImageField(upload_to='productos/', null=True, blank=True)
 
     def __str__(self):
         return self.nombre
 
 class Compra(models.Model):
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
-    cantidad = models.IntegerField()
+    cantidad = models.IntegerField(default=0)
     fecha_compra = models.DateField(auto_now_add=True)
-    total = models.DecimalField(max_digits=12, decimal_places=2)
+    total = models.IntegerField(null=True, blank=True)
+    precio_unitario = models.IntegerField(null=True, blank=True, default=0)
+    porcentaje_ganancia = models.IntegerField(null=True, blank=True, default=0)
 
     def __str__(self):
         return f"Compra de {self.cantidad} unidades de {self.producto.nombre}"

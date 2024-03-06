@@ -1,42 +1,10 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
-
-from .forms import CompraForm
-
+from .forms import *
 from compras.models import *
 # Create your views here.
 
 ####################CRUD PRODUCTOS#######################
-
-
-
-
-
-
-
-
-
-
-
-
-####################CRUD PROVEEDORES######################
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-########################CRUD COMPRAS##########################
 
 @login_required
 def index(request):
@@ -46,12 +14,18 @@ def index(request):
 
 @login_required
 def registrarCompra(request):
+    total = int(request.POST["total"])
+    cantidad = int(request.POST["cantidad"])
+    porcentaje_ganancia = int(request.POST["porcentaje_ganancia"])
+    precio_unitario = total/cantidad
     compra = Compra.objects.create(producto_id = request.POST['producto'],
                                    cantidad = request.POST['cantidad'],
-                                   total = request.POST['total']
-                                   )
+                                   total = request.POST['total'],
+                                   precio_unitario = precio_unitario,
+                                   porcentaje_ganancia = porcentaje_ganancia)
     producto = get_object_or_404(Producto, pk=request.POST['producto'])
     producto.stock_disponible += int(compra.cantidad)
+    producto.precio = compra.precio_unitario+(compra.precio_unitario*(porcentaje_ganancia/100))
     producto.save()
     return redirect('compras')
 
@@ -68,19 +42,26 @@ def verDetalleCompra(request, id):
             producto = compra.producto
             cant1=comprainit.cantidad
             form = CompraForm(request.POST, instance=compra)
+
             if form.is_valid():
-                compra.save()
+
+                compra = form.save(commit=False)
+                compra.precio_unitario = compra.total/compra.cantidad
                 cant2= compra.cantidad
                 cantidad=cant2-cant1
 
                 if cant2>cant1:
                     producto.stock_disponible += int(cantidad)
+                    producto.precio = round(compra.precio_unitario + (compra.precio_unitario * (compra.porcentaje_ganancia / 100)))
                     producto.save()
                 elif cant2<cant1:
                     producto.stock_disponible -= abs(cantidad)
+                    producto.precio = round(compra.precio_unitario + (compra.precio_unitario * (compra.porcentaje_ganancia / 100)))
                     producto.save()
                 else:
-                    pass
+                    producto.precio = round(compra.precio_unitario + (compra.precio_unitario * (compra.porcentaje_ganancia / 100)))
+                    producto.save()
+                compra.save()
 
                 return redirect('compras')
         except ValueError:

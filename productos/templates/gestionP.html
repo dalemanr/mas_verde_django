@@ -5,22 +5,21 @@
 {% block title %} Registrar Productos {% endblock %}
 
 {% block form %}
-    <form action="registrarProducto/" method="POST">{% csrf_token %}
+    <form action="registrarProducto/" method="POST" enctype="multipart/form-data">{% csrf_token %}
+        <div class="form-group">
+            <input type="file" id="imagen" name="imagen" class="form-control">
+        </div>
         <div class="form-group">
             <input type="text" id="txtNombre" name="txtNombre" class="form-control" placeholder="Nombre" maxlength="150" required>
         </div>
         <div class="form-group">
             <input type="text" id="txtDescripcion" name="txtDescripcion" class="form-control" placeholder="Descripcion"  maxlength="250" required>
         </div>
-        <div class="form-group">
-            <input type="number" id="txtPrecio" name="txtPrecio" class="form-control" placeholder="Precio" step="0.01" min="0.01" required>
-        </div>                    
+
         <div class="form-group">
             <input type="number" id="txtStock_Disponible" name="txtStock_Disponible" class="form-control" placeholder="Stock Disponible" min="0" required>
         </div>                
-        <div class="form-group">
-            <input type="date" id="txtFecha_Creacion" name="txtFecha_Creacion" class="form-control" required>
-        </div> 
+
         <div class="form-group">
             <select id="txtProveedor" name="txtProveedor" class="form-control" required>
                 <option value="#" disabled selected>Selecciona un proveedor</option>
@@ -42,6 +41,7 @@
         <thead>
             <tr>
                 <th>#</th>
+                <th>Img</th>
                 <th>Nombre</th>
                 <th>Descripción</th>
                 <th>Precio</th>
@@ -55,6 +55,11 @@
             {% for p in productos  %}
             <tr>
                 <td>{{forloop.counter}}</td>
+                {% if p.imagen %}
+                <td><img src="{{ p.imagen.url }}" alt="Imagen del producto" width="85"></td>
+                {% else %}
+                <td>No hay imagen</td>
+                {% endif %}
                 <td>{{p.nombre}}</td>
                 <td>{{p.descripcion}}</td>
                 <td>{{p.precio}}</td>

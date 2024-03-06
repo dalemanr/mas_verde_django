@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from compras.models import Producto
 from compras.models import Proveedor
 from django.contrib import messages
+from compras.forms import ImagenForm
 
 
 ###########CRUD PRODUCTOS##################
@@ -14,20 +15,19 @@ def index(request):
                                              "proveedores": proveedores,})
 
 def registrarProducto(request):
+ form = ImagenForm
  if request.method == 'POST':
     nombre=request.POST['txtNombre']
     descripcion=request.POST['txtDescripcion']
-    precio=request.POST['txtPrecio']
     stock_disponible=request.POST['txtStock_Disponible']
-    fecha_creacion=request.POST['txtFecha_Creacion']
     proveedor=request.POST['txtProveedor']
-    
-    producto = Producto.objects.create(nombre=nombre,descripcion=descripcion,precio=precio,stock_disponible=stock_disponible,proveedor_id=proveedor)
+    imagen=request.FILES['imagen']
+    producto = Producto.objects.create(nombre=nombre,descripcion=descripcion,stock_disponible=stock_disponible,proveedor_id=proveedor, imagen=imagen)
     messages.success(request, '¡Producto Registrado!')
     return redirect('productos')
  else: 
-     
-     return render(request, 'gestionP.html')
+
+     return render(request, 'gestionP.html',{'form': form})
 
 def editarProducto(request, id):
     producto=Producto.objects.get(id=id)
@@ -41,14 +41,14 @@ def edicionProducto(request,id):
         descripcion=request.POST['txtDescripcion']
         precio=request.POST['txtPrecio']
         stock_disponible=request.POST['txtStock_Disponible']
-        fecha_creacion=request.POST['txtFecha_Creacion']
+
         proveedor=request.POST['txtProveedor']
         
         producto=Producto.objects.get(id=id)
         producto.descripcion = descripcion
         producto.precio = precio
         producto.stock_disponible = stock_disponible
-        producto.fecha_creacion = fecha_creacion
+
         producto.proveedor_id = proveedor
         producto.save()
         messages.success(request, '¡Producto Editado!')

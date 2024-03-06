@@ -159,3 +159,6 @@ else:
     EMAIL_HOST_USER = '562b829aed58d8'
     EMAIL_HOST_PASSWORD = '00f46b8e2edbc0'
     EMAIL_PORT = '2525'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
