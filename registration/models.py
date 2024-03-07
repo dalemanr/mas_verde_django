@@ -8,3 +8,7 @@ class User(AbstractUser):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+
+    @staticmethod
+    def get_User(self):
+        return self

@@ -2,15 +2,18 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
-from .models import Venta, DetalleVenta
+from .models import Venta
 from .forms import VentaForm, DetalleVentaFormSet
+
 
 def registrar_venta(request):
     if request.method == 'POST':
         venta_form = VentaForm(request.POST)
         detalle_venta_formset = DetalleVentaFormSet(request.POST)
         if venta_form.is_valid() and detalle_venta_formset.is_valid():
-            venta = venta_form.save()
+            venta = venta_form.save(commit=False)
+            venta.vendedor = request.user
+            venta.save()
             for detalle_venta_form in detalle_venta_formset:
                 detalle_venta = detalle_venta_form.save(commit=False)
                 detalle_venta.venta = venta
