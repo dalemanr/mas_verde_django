@@ -5,6 +5,7 @@
 {% block title %} Registrar Compras {% endblock %}
 
 {% block form %}
+{{ error }}
 <form action="{% url 'registrarCompra' %}" method="POST">
     {% csrf_token %}
     {{ form }}

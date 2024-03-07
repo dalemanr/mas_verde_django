@@ -12,7 +12,7 @@ class Venta(models.Model):
     productos = models.ManyToManyField(Producto, through='DetalleVenta')
     cliente = models.ForeignKey(Clientes, on_delete=models.CASCADE, null=True, blank=True)
     vendedor = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    total = models.DecimalField(max_digits=30, decimal_places=2)
+    total = models.DecimalField(max_digits=30, decimal_places=2, default=0)
 
     def set_vendedor(self):
         self.vendedor = get_user # en realidad esto va en una vista a la hora de crear la venta pero lo ponemos aca para no perderlo xd y no es una funcion

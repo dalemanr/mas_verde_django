@@ -11,26 +11,27 @@
         {% csrf_token %}
         {{ venta_form.as_p }}
 
-        <!-- Detalle de la venta -->
         <h2>Detalle de la Venta</h2>
         {{ detalle_venta_formset.management_form }}
-        <table>
-            <thead>
-                <tr>
-                    <th>Producto</th>
-                    <th>Cantidad</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for detalle_form in detalle_venta_formset %}
-                <tr>
-                    <td>{{ detalle_form.producto }}</td>
-                    <td>{{ detalle_form.cantidad }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div id="detalle-venta">
+            {% for detalle_form in detalle_venta_formset %}
+                {{ detalle_form.as_p }}
+            {% endfor %}
+        </div>
+        <button type="button" id="add-detalle-venta">Agregar Producto</button>
+        <br><br>
         <input type="submit" value="Registrar Venta">
     </form>
+
+    <script>
+        document.getElementById('add-detalle-venta').onclick = function() {
+            var form_idx = $('#id_detalleventa_set-TOTAL_FORMS').val();
+            $('#detalle-venta').append($('#empty_detalle-venta').html().replace(/__prefix__/g, form_idx));
+            $('#id_detalleventa_set-TOTAL_FORMS').val(parseInt(form_idx) + 1);
+        }
+    </script>
+    <div id="empty_detalle-venta" style="display:none;">
+        {{ detalle_venta_formset.empty_form.as_p }}
+    </div>
 </body>
 </html>

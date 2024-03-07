@@ -1,0 +1,34 @@
+<!-- ventas/lista_ventas.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Ventas</title>
+</head>
+<body>
+    <h1>Detalles de la Venta</h1>
+    <h2>Cliente: {{ venta.cliente }}</h2>
+    <h3>Vendedor: {{ venta.vendedor }}</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for detalle_venta in detalles_venta %}
+            <tr>
+                <td>{{ detalle_venta.producto }}</td>
+                <td>{{ detalle_venta.cantidad }}</td>
+                <td>{{ detalle_venta.subtotal }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+<div>
+    <h4>Total venta: ${{ venta.total }}</h4>
+</div>
+</body>
+</html>

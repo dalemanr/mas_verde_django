@@ -1,5 +1,6 @@
 from django.shortcuts import render
-
+from compras.models import Producto
 # Create your views here.
 def index(request):
-    return render(request, "home.html")
+    productos = Producto.objects.all()
+    return render(request, "home.html", {"productos": productos})
