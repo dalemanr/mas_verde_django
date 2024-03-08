@@ -26,7 +26,7 @@ def registrarCliente(request):
     
     clientes = Clientes.objects.create(nombre=nombre,apellido=apellido,documento=documento,telefono=telefono,correo=correo)
     messages.success(request, '¡Cliente Registrado!')
-    return redirect('clientes')
+    return redirect(request.META.get('HTTP_REFERER', '/'))
  else: 
      
      return render(request, 'gestionC.html')

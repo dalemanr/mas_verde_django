@@ -1,28 +1,56 @@
-<!-- ventas/registrar_venta.html -->
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <title>Registrar Venta</title>
-</head>
-<body>
-    <h1>Registrar Venta</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ venta_form.as_p }}
+{% extends "baseForms.html" %}
 
-        <h2>Detalle de la Venta</h2>
-        {{ detalle_venta_formset.management_form }}
-        <div id="detalle-venta">
-            {% for detalle_form in detalle_venta_formset %}
+{% block namePage %} Gestion de Clientes {% endblock %}
+
+{% block title %} Registrar Clientes {% endblock %}
+
+{% block form %}
+    <form action="{% url 'registrarCliente' %}" method="POST">{% csrf_token %}
+                    <div class="form-group">
+                        <input type="text" id="txtNombre" name="txtNombre" value="{{ clientes.nombre }}" class="form-control" placeholder="Nombre" maxlength="50" required >
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="txtApellido" name="txtApellido" value="{{ clientes.apellido }}" class="form-control" placeholder="Apellido"  maxlength="50" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="txtDocumento" name="txtDocumento" value="{{ clientes.documento }}" class="form-control" placeholder="Documento" maxlength="50" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="txtTelefono" name="txtTelefono" value="{{ clientes.telefono }}" class="form-control" placeholder="Telefono" maxlength="10" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="txtCorreo" name="txtCorreo" value="{{ clientes.correo }}" class="form-control" placeholder="Correo" maxlength="100" required>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success btn-block text-white">Guardar</button>
+                    </div>
+                </form>
+{% endblock %}
+
+{% block table %}
+<div class="container">
+    <h1>Registrar Venta</h1>
+
+    <form method="post" class="needs-validation" novalidate>
+    {% csrf_token %}
+    <div class="form-group">
+
+        {{ venta_form.as_p }}
+    </div>
+    <h2>Productos</h2>
+    {{ detalle_venta_formset.management_form }}
+    <div id="detalle-venta">
+        {% for detalle_form in detalle_venta_formset %}
+            <div class="form-group">
                 {{ detalle_form.as_p }}
-            {% endfor %}
-        </div>
-        <button type="button" id="add-detalle-venta">Agregar Producto</button>
-        <br><br>
-        <input type="submit" value="Registrar Venta">
-    </form>
+            </div>
+        {% endfor %}
+    </div>
+    <button type="button" class="btn btn-light" id="add-detalle-venta">Agregar Producto</button>
+    <br><br>
+    <button type="submit" class="btn btn-success">Registrar Venta</button>
+</form>
+
 
     <script>
         document.getElementById('add-detalle-venta').onclick = function() {
@@ -34,5 +62,5 @@
     <div id="empty_detalle-venta" style="display:none;">
         {{ detalle_venta_formset.empty_form.as_p }}
     </div>
-</body>
-</html>
+    </div>
+{% endblock %}

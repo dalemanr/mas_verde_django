@@ -4,18 +4,22 @@
 
 {% block content %}
 
-    <form method="POST">
-        {% csrf_token %}
-        {{ form }}
-        <button>Save</button>
-    </form>
+    <div class="card">
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}
+                    {{ form }}
+                <button class="btn btn-success">Guardar</button>
+            </form>
 
-    <form action="{% url 'eliminarCompra' compra.id %}" method="POST">
-        {% csrf_token %}
-        <button>
-            Eliminar
-        </button>
-    </form>
+            <form action="{% url 'eliminarCompra' compra.id %}" method="POST">
+                {% csrf_token %}
+                <a class="btn btn-danger" href="{% url 'eliminarCompra' compra.id %}" onclick="return confirm('¿Está seguro de querer eliminar el registro?')">eliminar</a>
+            </form>
+
+        </div>
+
+    </div>
 
 </body>
 </html>

@@ -31,7 +31,7 @@
                         <a href="{% url 'item_update' item.pk %}" class="btn btn-info">Editar</a> |
                         <form style="display:inline-block;" action="{% url 'item_delete' item.pk %}" method="post">
                             {% csrf_token %}
-                            <input type="submit" class="btn btn-danger" value="Eliminar">
+                            <input type="submit" class="btn btn-danger" onclick="return confirm('¿Está seguro de querer eliminar el registro?')" value="Eliminar">
                         </form>
                     </td>
                 </tr>

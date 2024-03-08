@@ -9,7 +9,7 @@
 <form action="{% url 'registrarCompra' %}" method="POST">
     {% csrf_token %}
     {{ form }}
-    <button>Save</button>
+    <button class="btn btn-outline-success">Guardar</button>
 </form>
 {% endblock %}
 

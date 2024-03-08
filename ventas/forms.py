@@ -6,11 +6,20 @@ class VentaForm(forms.ModelForm):
     class Meta:
         model = Venta
         fields = ['cliente']
+        widgets = {
+            'cliente': forms.Select(attrs={'class': 'form-control'}),
+        }
+
+
 
 class DetalleVentaForm(forms.ModelForm):
     class Meta:
         model = DetalleVenta
         fields = ['producto', 'cantidad']
+        widgets = {
+            'producto': forms.Select(attrs={'class': 'form-control'}),
+            'cantidad': forms.NumberInput(attrs={'class': 'form-control'}),
+        }
 
 
 
