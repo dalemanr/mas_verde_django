@@ -1,34 +1,9 @@
-{% extends "baseForms.html" %}
+{% extends 'baseAccounts.html' %}
 
-{% block namePage %} Gestion de Clientes {% endblock %}
+{% block tittle %} Ventas {% endblock %}
 
-{% block title %} Registrar Clientes {% endblock %}
-
-{% block form %}
-    <form action="{% url 'registrarCliente' %}" method="POST">{% csrf_token %}
-                    <div class="form-group">
-                        <input type="text" id="txtNombre" name="txtNombre" value="{{ clientes.nombre }}" class="form-control" placeholder="Nombre" maxlength="50" required >
-                    </div>
-                    <div class="form-group">
-                        <input type="text" id="txtApellido" name="txtApellido" value="{{ clientes.apellido }}" class="form-control" placeholder="Apellido"  maxlength="50" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" id="txtDocumento" name="txtDocumento" value="{{ clientes.documento }}" class="form-control" placeholder="Documento" maxlength="50" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" id="txtTelefono" name="txtTelefono" value="{{ clientes.telefono }}" class="form-control" placeholder="Telefono" maxlength="10" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="email" id="txtCorreo" name="txtCorreo" value="{{ clientes.correo }}" class="form-control" placeholder="Correo" maxlength="100" required>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-success btn-block text-white">Guardar</button>
-                    </div>
-                </form>
-{% endblock %}
-
-{% block table %}
-<div class="container">
+{% block content %}
+    <div class="container">
     <h1>Registrar Venta</h1>
 
     <form method="post" class="needs-validation" novalidate>
