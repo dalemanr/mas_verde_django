@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recibo PDF</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #cecece;
+            color: #343a40;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #cecece;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2, h3, h4, h5, h6 {
+            color: #197500;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #cecece;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #197500;
+            color: #cecece;
+        }
+        .text-secondary {
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="">
+        <h1>Detalles </h1>
+        <h2><span class="text-secondary">Cliente:</span> {{ venta.cliente }}</h2>
+        <h2><span class="text-secondary">Vendedor(a):</span> {{ venta.vendedor }}</h2>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for detalle_venta in detalles_venta %}
+            <tr>
+                <td>{{ detalle_venta.producto }}</td>
+                <td>{{ detalle_venta.cantidad }}</td>
+                <td>{{ detalle_venta.subtotal }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div>
+        <h4>Total venta: ${{ venta.total }}</h4>
+    </div>
+</div>
+
+</body>
+</html>

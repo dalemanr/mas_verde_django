@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>lista de ventas</title>
+</head>
+<body>
+
+     <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>fecha</th>
+                <th>cliente</th>
+                <th>vendedor</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for venta in ventas  %}
+            <tr>
+                <td><a href="{% url 'recibo' venta.pk %}">{{ venta.pk }}</a></td>
+                <td>{{ venta.fecha }}</td>
+                <td>{{ venta.cliente }}</td>
+                <td>{{ venta.vendedor }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>

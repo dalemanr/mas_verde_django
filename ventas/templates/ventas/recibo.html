@@ -31,4 +31,8 @@
     <h4>Total venta: ${{ venta.total }}</h4>
 </div>
     </div>
+    
+    <div>
+        <a  class="btn btn-warning" href="{% url 'generar_pdf' venta.pk %}">Recibo en pdf</a>
+    </div>
 {% endblock %}

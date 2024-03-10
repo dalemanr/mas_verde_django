@@ -1,7 +1,11 @@
+from django.core.mail import EmailMessage
+
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.template.loader import get_template
 from django.urls import reverse
+from xhtml2pdf import pisa
 
 from .models import Venta
 from .forms import VentaForm, DetalleVentaFormSet
@@ -44,3 +48,52 @@ def recibo(request, venta_id):
     venta = Venta.objects.get(pk=venta_id)
     detalles_venta= venta.detalleventa_set.all()
     return render(request, 'ventas/recibo.html',{'venta':venta,'detalles_venta': detalles_venta})
+
+def ventas_list(request):
+    ventas = Venta.objects.all()
+    return render(request, 'ventas/ventas_list.html', {
+        'ventas': ventas
+    })
+
+def generar_pdf(request, venta_id):
+    venta = Venta.objects.get(pk=venta_id)
+    detalles_venta= venta.detalleventa_set.all()
+
+    template_path = 'ventas/generar_pdf.html'
+    template = get_template(template_path)
+
+    context = {'venta': venta, 'detalles_venta': detalles_venta}
+    html = template.render(context)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="venta.pdf"'
+
+    pisa_statuts = pisa.CreatePDF(
+        html, dest=response
+    )
+
+    if pisa_statuts.err:
+        return HttpResponse('Error al generar pdf', status=500)
+    enviar_correo_con_pdf(response.content, 'venta.pdf', venta.cliente.correo)
+    return response
+
+def enviar_correo_con_pdf(pdf_bytes, pdf_filename, destinatario):
+
+    email = EmailMessage(
+        subject='Recibo de compra en tienda FUNAT S.A.S',
+        body='Adjunto encontrarás tu recibo de compra.',
+        from_email='jose.aleman7@misena.edu.co',
+        to=[destinatario],
+    )
+
+    #Ejemplos de para agregar elementos de una lista a otra lista ya existente
+
+    #lista_de_correos = []
+
+    # email.to.append(element for element in lista_de_correos)
+    # email.to.extend(lista_de_correos)
+    # email.to + lista_de_correos
+
+    email.attach(filename=pdf_filename, content=pdf_bytes, mimetype='application/pdf')
+
+    email.send()

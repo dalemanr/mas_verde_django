@@ -149,16 +149,17 @@ AUTH_USER_MODEL = 'registration.User'
 
 # emails
 
-if DEBUG:
-    EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-    EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_emails")
-else:
+# if DEBUG:
+#     EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+#     EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_emails")
+# else:
     #Aqui se configura el email real
 
-    EMAIL_HOST = 'sandbox.smtp.mailtrap.io'
-    EMAIL_HOST_USER = '562b829aed58d8'
-    EMAIL_HOST_PASSWORD = '00f46b8e2edbc0'
-    EMAIL_PORT = '2525'
+EMAIL_HOST = 'smtp.googlemail.com'
+EMAIL_HOST_USER = 'jose.aleman7@misena.edu.co'
+EMAIL_HOST_PASSWORD = 'etcqwjzwjjyxczwf'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
