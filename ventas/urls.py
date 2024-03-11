@@ -7,5 +7,6 @@ urlpatterns = [
     path('clientes/', registrarCliente, name='registrarCliente'),
     path('recibo/<int:venta_id>/', recibo, name='recibo'),
     path('lista_ventas', ventas_list, name='lista_ventas'),
+    path('productos_mas_vendidos', productos_mas_vendidos, name='productos_mas_vendidos'),
     path('generar_pdf/<int:venta_id>/', generar_pdf, name='generar_pdf'),
 ]

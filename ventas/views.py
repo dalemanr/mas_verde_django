@@ -1,13 +1,15 @@
 from django.core.mail import EmailMessage
 
 from django.contrib.auth.decorators import login_required
+from django.db.models import Sum
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.template.loader import get_template
 from django.urls import reverse
 from xhtml2pdf import pisa
 
-from .models import Venta
+from compras.models import Producto
+from .models import Venta, DetalleVenta
 from .forms import VentaForm, DetalleVentaFormSet
 
 @login_required
@@ -40,8 +42,9 @@ def registrar_venta(request):
     else:
         venta_form = VentaForm()
         detalle_venta_formset = DetalleVentaFormSet()
+        productos = Producto.objects.all()
     return render(request, 'ventas/registrar_venta.html',
-                  {'venta_form': venta_form, 'detalle_venta_formset': detalle_venta_formset})
+                  {'venta_form': venta_form, 'detalle_venta_formset': detalle_venta_formset, 'productos': productos} )
 
 @login_required
 def recibo(request, venta_id):
@@ -54,6 +57,10 @@ def ventas_list(request):
     return render(request, 'ventas/ventas_list.html', {
         'ventas': ventas
     })
+
+def productos_mas_vendidos(request):
+    ventas_por_producto = DetalleVenta.objects.values('producto__nombre').annotate(total_ventas=Sum('cantidad'))
+    return render(request, 'ventas/productos_mas_vendidos.html',{'ventas': ventas_por_producto})
 
 def generar_pdf(request, venta_id):
     venta = Venta.objects.get(pk=venta_id)
@@ -97,3 +104,4 @@ def enviar_correo_con_pdf(pdf_bytes, pdf_filename, destinatario):
     email.attach(filename=pdf_filename, content=pdf_bytes, mimetype='application/pdf')
 
     email.send()
+
