@@ -1,0 +1,75 @@
+{% extends 'baseAccounts.html' %}
+
+{% block title %} Respuesta {% endblock %}
+
+{% block content %}
+<main role="main">
+  <div class="container">
+    <div class="row mt-5">
+      <div class="col-md-6 mx-auto">
+        {% if 'valido' in request.GET %}
+          <p class="alert alert-success">Correo enviado correctamente</p>
+        {% endif %}
+        <div class="card border-success">
+          <div class="card-body">
+            <form action="" method="POST">
+              {% csrf_token %}
+              
+              <div class="row mb-3">
+                <div class="col-md-3">
+                  {{ miFormulario.nombre.label_tag }}
+                </div>
+                <div class="col-md-9">
+                  {{ miFormulario.nombre }}
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-md-3">
+                  {{ miFormulario.email.label_tag }}
+                </div>
+                <div class="col-md-9">
+                  {{ miFormulario.email }}
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-md-3">
+                  {{ miFormulario.asunto.label_tag }}
+                </div>
+                <div class="col-md-9">
+                  {{ miFormulario.asunto }}
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-md-3">
+                  {{ miFormulario.contenido.label_tag }}
+                </div>
+                <div class="col-md-9">
+                  {{ miFormulario.contenido }}
+                </div>
+              </div>
+              <br>
+              <br>
+              {% if 'valido' not in request.GET %}
+                <center><input type="submit" class="btn btn-success" value="Enviar"></center>
+              {% endif %}
+            </form>
+
+            {% if miFormulario.errors %}
+              <div class="errors">
+                <ul>
+                  {% for error in miFormulario.errors %}
+                    <li class="alert alert-danger">{{ error }}</li>
+                  {% endfor %}
+                </ul>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}

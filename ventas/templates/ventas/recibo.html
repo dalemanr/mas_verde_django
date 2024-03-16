@@ -1,38 +1,40 @@
 {% extends 'baseAccounts.html' %}
 
-{% block tittle %} Recibo {% endblock %}
+{% block title %} Recibo {% endblock %}
 
 {% block content %}
-    <div class="container">
-    <div class="">
-        <h1>Detalles de la Venta</h1>
-        <h2> <span class="text-secondary"> Cliente: </span> {{ venta.cliente }}</h2>
-        <h2> <span class="text-secondary"> Vendedor(a): </span> {{ venta.vendedor }}</h2>
+    <div class="container mt-5">
+        <div class="mb-4">
+            <h1 class="display-4">Detalles de la Venta</h1>
+            <h2 class="text-secondary">Cliente: {{ venta.cliente }}</h2>
+            <h2 class="text-secondary">Vendedor(a): {{ venta.vendedor }}</h2>
+        </div>
+
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for detalle_venta in detalles_venta %}
+                    <tr>
+                        <td>{{ detalle_venta.producto }}</td>
+                        <td>{{ detalle_venta.cantidad }}</td>
+                        <td>${{ detalle_venta.subtotal }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="mt-4">
+            <h4>Total venta: ${{ venta.total }}</h4>
+        </div>
     </div>
-    <table class="table table-striped-columns">
-        <thead>
-            <tr>
-                <th>Producto</th>
-                <th>Cantidad</th>
-                <th>Subtotal</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for detalle_venta in detalles_venta %}
-            <tr>
-                <td>{{ detalle_venta.producto }}</td>
-                <td>{{ detalle_venta.cantidad }}</td>
-                <td>{{ detalle_venta.subtotal }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-<div>
-    <h4>Total venta: ${{ venta.total }}</h4>
-</div>
-    </div>
-    
-    <div>
-        <a  class="btn btn-warning" href="{% url 'generar_pdf' venta.pk %}">Recibo en pdf</a>
+
+    <div class="text-center mt-4">
+        <a class="btn btn-warning" href="{% url 'generar_pdf' venta.pk %}">Recibo en PDF</a>
     </div>
 {% endblock %}

@@ -1,31 +1,93 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>lista de ventas</title>
-</head>
-<body>
+{% extends 'baseAccounts.html' %}
 
-     <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>fecha</th>
-                <th>cliente</th>
-                <th>vendedor</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for venta in ventas  %}
-            <tr>
-                <td><a href="{% url 'recibo' venta.pk %}">{{ venta.pk }}</a></td>
-                <td>{{ venta.fecha }}</td>
-                <td>{{ venta.cliente }}</td>
-                <td>{{ venta.vendedor }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+{% block content %}
 
-</body>
-</html>
+    <div class="container mt-5">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Fecha</th>
+                    <th>Cliente</th>
+                    <th>Vendedor</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for venta in ventas %}
+                    <tr>
+                        <td><a href="{% url 'recibo' venta.pk %}">{{ venta.pk }}</a></td>
+                        <td>{{ venta.fecha }}</td>
+                        <td>{{ venta.cliente }}</td>
+                        <td>{{ venta.vendedor }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <center><a href="{% url 'productos_mas_vendidos' %}" class="btn btn-success">Generar reporte</a></center>
+    </div>
+{% endblock %}
+
+{% block navbar %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-success">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'inicio' %}">Funat S.A.S</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{% url 'inicio' %}">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'pqrs' %}">Contacto</a>
+                </li>
+
+                {% if not request.user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">Entrar</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'signup' %}">Registro</a>
+                </li>
+                {% else %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Registros
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="nav-item active ">
+                            <a class="nav-link text-dark" href="{% url 'inicio' %}">Home </a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link text-dark" href="{% url 'compras' %}">Pqrs</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="{% url 'compras' %}">Compras</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="{% url 'productos' %}">Productos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="{% url 'item_list' %}">Proveedores</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="{% url 'venta' %}">Ventas</a>
+                        </li>
+                    </ul>
+
+                </li>
+                <li class="nav-item">
+                    <form action="{% url 'logout' %}" method="POST">
+                        {% csrf_token %}
+                        <button class="btn btn-outline-light"> salir </button>
+                    </form>
+                </li>
+                {% endif %}
+            </ul>
+
+        </div>
+    </div>
+</nav>
+{% endblock %}

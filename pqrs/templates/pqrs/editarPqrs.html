@@ -1,0 +1,50 @@
+{% extends "baseClientes.html" %}
+
+{% block contenido %}
+
+<div class="row">
+    <div class="col-md-4 offset-md-4">
+        <h2>Editar Cliente</h2>
+        <div class="card">
+            <div class="card-body">
+                <form action="{% url 'edicionPqrs' pqrs.id %}" method="POST">{% csrf_token %}
+                    <div class="row">
+                        <label for="txtNombre">Nombre</label>
+                        <input type="text" name="txtNombre" value="{{ pqrs.nombre }}" required> <!-- Cambié el input a un textarea -->
+                      </div>
+                      <div class="row">
+                        <label for="txtApellido">Apellido</label>
+                        <input type="text"name="txtApellido" value="{{ pqrs.apelllido }}" required><!-- Cambié el input a un textarea -->
+                      </div>
+                      <div class="row">
+                        <label for="txtCorreo">correo</label>
+                        <input type="email" name="txtCorreo" value="{{ pqrs.correo }}" required><!-- Cambié el input a un textarea -->
+                      </div>
+                      <div class="row">
+                        <label for="txtFecha">Fecha</label>
+                        <input type="date" name="txtFecha" value="{{ pqrs.fecha }}" required>
+                      </div>
+                      <div class="row">
+                        <label for="txtAsunto">Asunto</label>
+                        <select name="txtAsunto" value="{{ pqrs.asunto }}" required>
+                          <option value="Peticion">Peticion</option>
+                          <option value="Queja">Queja</option>
+                          <option value="Recurso">Recurso</option>
+                          <option value="Sujerencia">Sujerencia</option>
+                        </select>
+                      
+                      </div>
+                      <div class="row">
+                        <label for="txtDetalle">Detalle</label>
+                        <textarea name="txtDetalle" value="{{ pqrs.detalle }}" required></textarea> 
+                      </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success btn-block text-white">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

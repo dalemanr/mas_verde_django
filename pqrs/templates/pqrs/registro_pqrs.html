@@ -1,0 +1,150 @@
+{% extends 'baseAccounts.html' %}
+
+{% block tittle %} Contactenos {% endblock %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Formulario de contacto</title>
+  <!-- Aquí puedes incluir enlaces a tus estilos CSS si los tienes -->
+  <style>
+    /* Importación de fuentes de google fonts */ 
+    @import url(https://fonts.googleapis.com/css?family=Noto+Sans);
+
+    body{
+      height: 100%; 
+      font-family: 'Noto Sans', sans-serif;
+      background-color: #28a745; /* Cambié el color de fondo a verde */
+    }
+
+    .row {
+      margin-bottom: 20px; /* Añadí un margen inferior a las filas para separarlas visualmente */
+    }
+
+    label{
+      display: block; 
+      float: center;  
+      color: #000; /* Cambié el color del texto a negro */
+    }
+
+    input, select {
+      background-color: #fbfbfb; 
+      width: 100%; /* Ajusté el ancho de los inputs y select al 100% */
+      height: 40px; 
+      border-radius: 5px;  
+      border-style: solid; 
+      border-width: 1px; 
+      border-color: #000; /* Cambié el color del borde a negro */
+      margin-top: 10px;  
+      padding-left: 10px;
+      margin-bottom: 20px; 
+    }
+
+    textarea {
+      background-color: #fbfbfb; 
+      width: 100%; /* Ajusté el ancho del textarea al 100% */
+      border-radius: 5px;  
+      border-style: solid; 
+      border-width: 1px; 
+      border-color: #000; /* Cambié el color del borde a negro */
+      margin-top: 10px;  
+      padding-left: 10px;
+      margin-bottom: 20px; 
+      height: 150px; /* Ajusté la altura del textarea a 150px */
+    }
+
+    button{
+      height: 45px; 
+      padding-left: 5px;
+      padding-right: 5px;   
+      margin-bottom: 20px; 
+      margin-top: 10px;   
+      text-transform: uppercase;
+      background-color: #28a745; /* Cambié el color de fondo del botón a verde */
+      border-color: #28a745; /* Cambié el color del borde del botón a verde */
+      border-style: solid; 
+      border-radius: 10px;  
+      width: 100%; /* Ajusté el ancho del botón al 100% */
+      cursor: pointer;
+      color: #fff; /* Cambié el color del texto a blanco */
+    }
+
+    button:hover {
+      background-color: #218838; /* Cambié el color de fondo del botón en hover a un tono más oscuro de verde */
+      border-color: #218838; /* Cambié el color del borde del botón en hover a un tono más oscuro de verde */
+    }
+
+    .aviso{
+      font-size: 13px;  
+      color: #0e0e0e;  
+    }
+
+    h2 {
+      font-size: 39px;  
+      text-align: center; 
+      padding-bottom: 20px; 
+      color: #000; /* Cambié el color del encabezado h2 a negro */
+    }
+
+    .card {
+      width: 460px; /* Ajusté el ancho de la tarjeta al mismo valor que el formulario */
+      margin: 80px auto;
+      border-radius: 10px;  
+      background-color: #fbfbfb; 
+      padding: 30px; /* Añadí un margen interior a la tarjeta */
+    }
+
+    /* creado por javiniguez.com, Julio 2019 */
+  </style>
+</head>
+<body>  
+
+  <div class="card">
+    <div class="formulario">      
+      <h2>Formulario de contacto</h2>
+
+      <form action="{% url 'registrar_pqrs' %}" method="POST">{% csrf_token %}
+        <div class="row">
+          <label for="txtNombre">Nombre</label>
+          <input type="text" name="txtNombre" required> <!-- Cambié el input a un textarea -->
+        </div>
+        <div class="row">
+          <label for="txtApellido">Apellido</label>
+          <input type="text"name="txtApellido" required><!-- Cambié el input a un textarea -->
+        </div>
+        <div class="row">
+          <label for="txtCorreo">correo</label>
+          <input type="email" name="txtCorreo" required><!-- Cambié el input a un textarea -->
+        </div>
+        <div class="row">
+          <label for="txtFecha">Fecha</label>
+          <input type="date" name="txtFecha" required>
+        </div>
+        <div class="row">
+          <label for="txtAsunto">Asunto</label>
+          <select name="txtAsunto" required>
+            <option value="Peticion">Peticion</option>
+            <option value="Queja">Queja</option>
+            <option value="Recurso">Recurso</option>
+            <option value="Sujerencia">Sujerencia</option>
+          </select>
+        
+        </div>
+        <div class="row">
+          <label for="txtDetalle">Detalle</label>
+          <textarea name="txtDetalle" required></textarea> <!-- Cambié el input a un textarea -->
+        </div>
+        
+        
+        <br> 
+        <div class="form-group">
+          <button type="submit" class="btn btn-success btn-block text-white" style="background-color: #28a745 !important; border-color: #28a745 !important;">Guardar</button>
+        </div>
+      </form>
+    </div>  
+  </div>
+</body>
+</html>
+{% endblock %}

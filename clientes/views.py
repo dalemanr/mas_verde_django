@@ -3,10 +3,10 @@ from django.shortcuts import render, redirect
 from .models import Clientes
 from django.contrib import messages
 from registration.views import group_required
-
+from django.contrib.auth.decorators import login_required
 ###########CRUD CLIENTES####################
 
-#@group_required('Vendedor')
+@login_required
 def index(request):
     if group_required('Vendedor'):
         clientelistado = Clientes.objects.all()
@@ -15,6 +15,7 @@ def index(request):
     else:
         return HttpResponseRedirect('Mal ahí, no tenes permiso de acceder aqui raton')
 
+@login_required
 def registrarCliente(request):
  if request.method == 'POST':
     nombre=request.POST['txtNombre']
@@ -31,10 +32,12 @@ def registrarCliente(request):
      
      return render(request, 'gestionC.html')
 
+@login_required
 def editarClientes(request,id):
     clientes=Clientes.objects.get(id=id)
     return render(request, "editarClientes.html" , {"clientes":clientes})
 
+@login_required
 def edicionClientes(request,id):
     if request.method == 'POST':
         nombre = request.POST.get('txtNombre')
@@ -52,6 +55,7 @@ def edicionClientes(request,id):
         messages.success(request, '¡Cliente Editado!')
         return redirect('clientes')
 
+@login_required
 def eliminarClientes(request, id):
     clientes=Clientes.objects.get(id=id)
     clientes.delete()

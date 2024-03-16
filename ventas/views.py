@@ -58,10 +58,29 @@ def ventas_list(request):
         'ventas': ventas
     })
 
+@login_required
 def productos_mas_vendidos(request):
-    ventas_por_producto = DetalleVenta.objects.values('producto__nombre').annotate(total_ventas=Sum('cantidad'))
-    return render(request, 'ventas/productos_mas_vendidos.html',{'ventas': ventas_por_producto})
+    ventas = DetalleVenta.objects.values('producto__nombre').annotate(total_ventas=Sum('cantidad')).order_by('-total_ventas')
 
+    template_path = 'ventas/productos_mas_vendidos.html'
+    template = get_template(template_path)
+
+    context = {'ventas': ventas}
+    html = template.render(context)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="Reporte_productos_mas_vendidos.pdf"'
+
+    pisa_statuts = pisa.CreatePDF(
+        html, dest=response
+    )
+
+    if pisa_statuts.err:
+        return HttpResponse('Error al generar pdf', status=500)
+    
+    return response
+
+@login_required
 def generar_pdf(request, venta_id):
     venta = Venta.objects.get(pk=venta_id)
     detalles_venta= venta.detalleventa_set.all()
@@ -84,6 +103,7 @@ def generar_pdf(request, venta_id):
     enviar_correo_con_pdf(response.content, 'venta.pdf', venta.cliente.correo)
     return response
 
+@login_required
 def enviar_correo_con_pdf(pdf_bytes, pdf_filename, destinatario):
 
     email = EmailMessage(

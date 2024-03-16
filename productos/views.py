@@ -3,17 +3,16 @@ from compras.models import Producto
 from compras.models import Proveedor
 from django.contrib import messages
 from compras.forms import ImagenForm
-
+from registration.views import group_required
 
 ###########CRUD PRODUCTOS##################
-
 def index(request):
     productoListados= Producto.objects.all()
     proveedores= Proveedor.objects.all()
     messages.success(request, '¡Productos Listados!')
     return render(request, "gestionP.html", {"productos": productoListados,
                                              "proveedores": proveedores,})
-
+@group_required("Administrador")
 def registrarProducto(request):
  form = ImagenForm
  if request.method == 'POST':
@@ -29,12 +28,14 @@ def registrarProducto(request):
 
      return render(request, 'gestionP.html',{'form': form})
 
+@group_required("Administrador")
 def editarProducto(request, id):
     producto=Producto.objects.get(id=id)
     proveedores= Proveedor.objects.all()
     return render(request, "editarProducto.html", {"producto":producto,
                                                    "proveedores": proveedores})
 
+@group_required("Administrador")
 def edicionProducto(request,id):
     if request.method == 'POST':
         nombre=request.POST['txtNombre']
@@ -54,6 +55,7 @@ def edicionProducto(request,id):
         messages.success(request, '¡Producto Editado!')
         return redirect('productos')
 
+@group_required("Administrador")
 def eliminarProducto(request, id):
     producto=Producto.objects.get(id=id)
     producto.delete()
