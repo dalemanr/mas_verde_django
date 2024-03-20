@@ -15,6 +15,8 @@
                     <th>Nombre</th>
                     <th>Apellido</th>
                     <th>Correo</th>
+                    <th>Estado</th>
+                    <th>Fecha respuesta</th>
                     <th colspan="2">Opciones</th>
                 </tr>
             </thead>
@@ -28,6 +30,8 @@
                     <td>{{p.nombre}}</td>
                     <td>{{p.apellido}}</td>
                     <td>{{p.correo}}</td>
+                    <td>{{p.estado}}</td>
+                    <td>{{p.fecha_respuesta}}</td>
                     <td><a href="{% url 'email' p.id %}" class="btn btn-primary">Respuesta Cliente</a></td>
                     <td><a href="eliminarPqrs/{{p.id}}" class="btn btn-danger btnEliminar">Eliminar</a></td>
                 </tr>

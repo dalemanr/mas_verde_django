@@ -80,7 +80,6 @@ def productos_mas_vendidos(request):
     
     return response
 
-@login_required
 def generar_pdf(request, venta_id):
     venta = Venta.objects.get(pk=venta_id)
     detalles_venta= venta.detalleventa_set.all()
@@ -103,7 +102,7 @@ def generar_pdf(request, venta_id):
     enviar_correo_con_pdf(response.content, 'venta.pdf', venta.cliente.correo)
     return response
 
-@login_required
+
 def enviar_correo_con_pdf(pdf_bytes, pdf_filename, destinatario):
 
     email = EmailMessage(
@@ -125,3 +124,31 @@ def enviar_correo_con_pdf(pdf_bytes, pdf_filename, destinatario):
 
     email.send()
 
+def ganancias_por_producto(request):
+    productos = Producto.objects.all()
+
+    ganancias_por_producto = {}
+
+    for producto in productos:
+        detalles_venta = DetalleVenta.objects.filter(producto=producto)
+        ganancia_producto = sum(detalle.subtotal for detalle in detalles_venta)
+
+        ganancias_por_producto[producto.nombre] = ganancia_producto
+
+    template_path = 'ventas/ganancias_por_producto.html'
+    template = get_template(template_path)
+
+    context = {'ganancias_por_producto': ganancias_por_producto}
+    html = template.render(context)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="Reporte_productos_mas_vendidos.pdf"'
+
+    pisa_statuts = pisa.CreatePDF(
+        html, dest=response
+    )
+
+    if pisa_statuts.err:
+        return HttpResponse('Error al generar pdf', status=500)
+
+    return response

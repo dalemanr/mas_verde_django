@@ -3,6 +3,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import *
 from compras.models import *
 from registration.views import group_required
+from django.template.loader import get_template
+from django.http import HttpResponse
+from xhtml2pdf import pisa
 # Create your views here.
 
 ####################CRUD Compras#######################
@@ -82,3 +85,28 @@ def eliminarCompra(request, id):
     producto.save()
     compra.delete()
     return redirect('compras')
+
+def compras_por_proveedor(request):
+    proveedores = Proveedor.objects.all()
+    compras_por_proveedor = {}
+    for proveedor in proveedores:
+        compras = Compra.objects.filter(producto__proveedor=proveedor)
+        compras_por_proveedor[proveedor.nombre] = compras
+
+    template_path = 'compras/productos.html'
+    template = get_template(template_path)
+
+    context = {'compras_por_proveedor': compras_por_proveedor}
+    html = template.render(context)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="Reporte_compras_a_proveedores.pdf"'
+
+    pisa_statuts = pisa.CreatePDF(
+        html, dest=response
+    )
+
+    if pisa_statuts.err:
+        return HttpResponse('Error al generar pdf', status=500)
+    
+    return response

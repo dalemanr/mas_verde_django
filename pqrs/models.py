@@ -11,5 +11,7 @@ class Pqrs(models.Model):
     nombre = models.CharField(max_length=100)
     apellido = models.CharField(max_length=100)
     correo = models.CharField(max_length=200)
+    estado = models.CharField(max_length=200, default="Pendiente", null=True, blank=True)
+    fecha_respuesta = models.DateField(null=True, blank=True)
 
     

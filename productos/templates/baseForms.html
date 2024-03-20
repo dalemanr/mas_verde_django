@@ -25,6 +25,8 @@
                         <a class="nav-link" href="{% url 'pqrs' %}">Contacto</a>
                     </li>
   
+                      
+  
                     {% if not request.user.is_authenticated %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'login' %}">Entrar</a>
@@ -55,6 +57,9 @@
                                 <a class="nav-link text-dark" href="{% url 'venta' %}">Ventas</a>
                             </li>
                             <li class="nav-item">
+                              <a class="nav-link text-dark" href="{% url 'lista_ventas' %}">lista de Ventas</a>
+                          </li>
+                            <li class="nav-item">
                               <a class="nav-link text-dark" href="{% url 'clientes' %}">Clientes</a> 
                            </li>
                            <li class="nav-item">
@@ -64,19 +69,26 @@
                         </ul>
   
                     </li>
-                    <li class="nav-item">
-                        <form action="{% url 'logout' %}" method="POST">
-                            {% csrf_token %}
-                            <button class="btn btn-outline-light"> salir </button>
-                        </form>
-                    </li>
+                    <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          {{ user.first_name }} {{ user.last_name }}
+                      </a>
+                      <ul class="dropdown-menu">
+                          <li class="nav-item">
+                              <form action="{% url 'logout' %}" method="POST">
+                                  {% csrf_token %}
+                                  <button class="btn btn-outline-dark"> salir </button>
+                              </form>
+                          </li>
+                      </ul>
+                    
+                    
                     {% endif %}
                 </ul>
   
             </div>
         </div>
     </nav>
-
 
       
       <div class="container py-4">

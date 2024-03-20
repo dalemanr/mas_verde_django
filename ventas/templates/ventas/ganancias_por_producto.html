@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Recibo PDF</title>
+    <title>Ganancias por Producto</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -42,35 +41,22 @@
     </style>
 </head>
 <body>
-
-<div class="container">
-    <div class="">
-        <h1>Detalles </h1>
-        <h2><span class="text-secondary">Cliente:</span> {{ venta.cliente }}</h2>
-        <h2><span class="text-secondary">Vendedor(a):</span> {{ venta.vendedor }}</h2>
-    </div>
+    <h1>Ganancias por Producto</h1>
     <table>
         <thead>
             <tr>
                 <th>Producto</th>
-                <th>Cantidad</th>
-                <th>Subtotal</th>
+                <th>Ganancia</th>
             </tr>
         </thead>
         <tbody>
-            {% for detalle_venta in detalles_venta %}
-            <tr>
-                <td>{{ detalle_venta.producto }}</td>
-                <td>{{ detalle_venta.cantidad }}</td>
-                <td>{{ detalle_venta.subtotal }}</td>
-            </tr>
+            {% for producto, ganancia in ganancias_por_producto.items %}
+                <tr>
+                    <td>{{ producto }}</td>
+                    <td>{{ ganancia }}</td>
+                </tr>
             {% endfor %}
         </tbody>
     </table>
-    <div>
-        <h4>Total venta: ${{ venta.total }}</h4>
-    </div>
-</div>
-
 </body>
 </html>

@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.core.mail import EmailMessage
 from .forms import FormularioContacto
-from pqrs.models import  Pqrs
-
+from pqrs.models import Pqrs
+import datetime as dt
 
 def index(request):
     return render(request, 'emails/email.html')
@@ -14,6 +14,9 @@ def correo(request,id):
     if request.method == "POST":
         formulario_contacto = FormularioContacto(data=request.POST)
         if formulario_contacto.is_valid():
+            cliente.estado = "Respondido"
+            cliente.fecha_respuesta = dt.datetime.now()
+            cliente.save()
             nombre = cliente.nombre
             email = cliente.correo
             asunto = request.POST.get("asunto")
