@@ -1,0 +1,47 @@
+{% extends 'baseAccounts.html' %}
+
+{% block title %} Reporte de Ganancias por Producto {% endblock %}
+
+{% block content %}
+
+    <div id="contenido-pdf">
+
+        <h1>Ganancias por Producto mes: {{ mes }}</h1>
+        <p>Fecha del reporte: {{ fecha }}</p>
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Producto</th>
+                    <th>Ganancia</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for producto, ganancia in ganancias_por_producto.items %}
+                    <tr>
+                        <td>{{ producto }}</td>
+                        <td>{{ ganancia }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+    <div>
+        <button id="btn-generate-pdf" class="btn btn-warning">Generar PDF</button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.debug.js"></script>
+
+    <script>
+        document.getElementById('btn-generate-pdf').addEventListener('click', function() {
+            const doc = new jsPDF();
+
+            const htmlContent = document.getElementById('contenido-pdf').innerHTML;
+            doc.fromHTML(htmlContent, 15, 15); // Puedes ajustar las coordenadas x e y según tus necesidades
+
+            doc.save('reporte_ganancias_por_producto.pdf');
+        });
+    </script>
+
+{% endblock %}

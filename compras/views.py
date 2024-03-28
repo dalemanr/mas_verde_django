@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import *
@@ -14,7 +16,7 @@ from xhtml2pdf import pisa
 def index(request):
     compras = Compra.objects.all()
     form = CompraForm()
-    return render(request, "compras/compras.html", {"compras": compras, "form": form})
+    return render(request, "compras/compras.html", {"compras": compras, "form": form, 'error': 'No tienes permiso para ver compras inicia sesion desde otra cuenta'})
 
 
 @group_required("Administrador")
@@ -86,27 +88,15 @@ def eliminarCompra(request, id):
     compra.delete()
     return redirect('compras')
 
+from django.shortcuts import render
+from .models import Proveedor, Compra
+
 def compras_por_proveedor(request):
+    fecha = datetime.now()
     proveedores = Proveedor.objects.all()
     compras_por_proveedor = {}
     for proveedor in proveedores:
         compras = Compra.objects.filter(producto__proveedor=proveedor)
         compras_por_proveedor[proveedor.nombre] = compras
 
-    template_path = 'compras/productos.html'
-    template = get_template(template_path)
-
-    context = {'compras_por_proveedor': compras_por_proveedor}
-    html = template.render(context)
-
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="Reporte_compras_a_proveedores.pdf"'
-
-    pisa_statuts = pisa.CreatePDF(
-        html, dest=response
-    )
-
-    if pisa_statuts.err:
-        return HttpResponse('Error al generar pdf', status=500)
-    
-    return response
+    return render(request, 'compras/productos.html', {'compras_por_proveedor': compras_por_proveedor, 'fecha': fecha})

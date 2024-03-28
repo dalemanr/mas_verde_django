@@ -1,3 +1,5 @@
+import locale
+
 from django.core.mail import EmailMessage
 
 from django.contrib.auth.decorators import login_required
@@ -11,6 +13,10 @@ from xhtml2pdf import pisa
 from compras.models import Producto
 from .models import Venta, DetalleVenta
 from .forms import VentaForm, DetalleVentaFormSet
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
+from datetime import datetime, timedelta
+from calendar import month_name
 
 @login_required
 def registrar_venta(request):
@@ -54,31 +60,28 @@ def recibo(request, venta_id):
 
 def ventas_list(request):
     ventas = Venta.objects.all()
+
+    # Número de elementos por página
+    elementos_por_pagina = 5
+    paginator = Paginator(ventas, elementos_por_pagina)
+
+    # Obtener el número de página solicitado (si hay)
+    pagina = request.GET.get('page')
+
+    try:
+        # Obtener los objetos de la página solicitada
+        ventas_paginadas = paginator.page(pagina)
+    except PageNotAnInteger:
+        # Si la página no es un número entero, mostrar la primera página
+        ventas_paginadas = paginator.page(1)
+    except EmptyPage:
+        # Si la página está fuera del rango, mostrar la última página
+        ventas_paginadas = paginator.page(paginator.num_pages)
+
     return render(request, 'ventas/ventas_list.html', {
-        'ventas': ventas
+        'ventas': ventas_paginadas
     })
 
-@login_required
-def productos_mas_vendidos(request):
-    ventas = DetalleVenta.objects.values('producto__nombre').annotate(total_ventas=Sum('cantidad')).order_by('-total_ventas')
-
-    template_path = 'ventas/productos_mas_vendidos.html'
-    template = get_template(template_path)
-
-    context = {'ventas': ventas}
-    html = template.render(context)
-
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="Reporte_productos_mas_vendidos.pdf"'
-
-    pisa_statuts = pisa.CreatePDF(
-        html, dest=response
-    )
-
-    if pisa_statuts.err:
-        return HttpResponse('Error al generar pdf', status=500)
-    
-    return response
 
 def generar_pdf(request, venta_id):
     venta = Venta.objects.get(pk=venta_id)
@@ -124,31 +127,46 @@ def enviar_correo_con_pdf(pdf_bytes, pdf_filename, destinatario):
 
     email.send()
 
-def ganancias_por_producto(request):
-    productos = Producto.objects.all()
 
+def ganancias_producto(request):
+    locale.setlocale(locale.LC_TIME, 'es_ES.UTF-8')
+    now = datetime.now()
+    mes_actual = now.month
+    año_actual = now.year
+
+    numero_mes = int(now.month)
+    nombre_mes = month_name[numero_mes]
+
+
+    primer_dia_mes_actual = datetime(año_actual, mes_actual, 1)
+    ultimo_dia_mes_actual = datetime(año_actual, mes_actual, 1).replace(day=28)
+    ultimo_dia_mes_actual = ultimo_dia_mes_actual + timedelta(days=(4 - ultimo_dia_mes_actual.weekday()))
+
+    productos = Producto.objects.all()
     ganancias_por_producto = {}
 
     for producto in productos:
-        detalles_venta = DetalleVenta.objects.filter(producto=producto)
-        ganancia_producto = sum(detalle.subtotal for detalle in detalles_venta)
+        detalles_venta = DetalleVenta.objects.filter(producto=producto, venta__fecha__range=[primer_dia_mes_actual, ultimo_dia_mes_actual])
+        ganancia_producto = detalles_venta.aggregate(total_ganancia=Sum('subtotal'))['total_ganancia'] or 0
 
         ganancias_por_producto[producto.nombre] = ganancia_producto
 
-    template_path = 'ventas/ganancias_por_producto.html'
-    template = get_template(template_path)
+    return render(request, 'ventas/ganancias_producto.html', {'productos': productos, 'ganancias_por_producto': ganancias_por_producto , 'fecha': now, 'mes': nombre_mes})
 
-    context = {'ganancias_por_producto': ganancias_por_producto}
-    html = template.render(context)
+@login_required
+def productos_mas_vendidos(request):
+    locale.setlocale(locale.LC_TIME, 'es_ES.UTF-8')
+    now = datetime.now()
+    mes_actual = datetime.now().month
+    año_actual = datetime.now().year
 
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="Reporte_productos_mas_vendidos.pdf"'
+    numero_mes = int(now.month)
+    nombre_mes = month_name[numero_mes]
 
-    pisa_statuts = pisa.CreatePDF(
-        html, dest=response
-    )
+    # Filtrar las ventas por el mes actual
+    ventas_por_mes = DetalleVenta.objects.filter(venta__fecha__month=mes_actual, venta__fecha__year=año_actual) \
+                                         .values('producto__nombre') \
+                                         .annotate(total_ventas=Sum('cantidad')) \
+                                         .order_by('-total_ventas')
 
-    if pisa_statuts.err:
-        return HttpResponse('Error al generar pdf', status=500)
-
-    return response
+    return render(request, 'ventas/productos_mas_vendidos.html', {'ventas': ventas_por_mes, 'fecha': now, 'mes': nombre_mes})

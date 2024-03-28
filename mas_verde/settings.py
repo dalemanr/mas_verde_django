@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'inicio',
     'pqrs',
     'send_email',
+    'devoluciones',
+    'perdidas',
 ]
 
 MIDDLEWARE = [

@@ -18,7 +18,6 @@
         {% for detalle_form in detalle_venta_formset %}
             <div class="form-group">
                 {{ detalle_form.as_p }}
-
             </div>
         {% endfor %}
     </div>
@@ -39,4 +38,5 @@
         {{ detalle_venta_formset.empty_form.as_p }}
     </div>
     </div>
+
 {% endblock %}

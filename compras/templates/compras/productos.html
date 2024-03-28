@@ -1,74 +1,47 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Compras por Proveedor</title>
-    <style>
-        body {
-            background-color: #eafce1; 
-            color: #145733; 
-            font-family: 'Arial', sans-serif; 
-        }
+{% extends 'baseAccounts.html' %}
 
-        .container {
-            max-width: 800px; 
-            margin: 0 auto; 
-        }
+{% block title %} Compras por Proveedor {% endblock %}
 
-        .display-4 {
-            color: #1a9341; 
-        }
-
-        .table {
-            margin-top: 20px; 
-        }
-
-        .table th,
-        .table td {
-            border: 1px solid #aed2a2; 
-            padding: 10px;
-        }
-
-        .table th {
-            background-color: #1a9341; 
-            color: #fff; 
-        }
-
-        .table-striped tbody tr:nth-of-type(odd) {
-            background-color: #d2f7cb;
-        }
-
-        a {
-            color: #1a9341; 
-            text-decoration: none;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
-        .btn-custom {
-            background-color: #1a9341; 
-            color: #fff; 
-            border: none;
-            padding: 8px 16px; 
-            display: block;
-            margin: 10px auto;
-        }
-
-        .btn-custom:hover {
-            background-color: #196d34; 
-        }
-    </style>
-</head>
-<body>
-    <h1>Compras por Proveedor</h1>
+{% block content %}
+<div id="contenido-pdf">
+<div class="container">
+    <h1 class="my-4">Compras por Proveedor</h1>
+    <p>Fecha de reporte: {{ fecha }}</p>
     {% for proveedor, compras in compras_por_proveedor.items %}
-        <h2>{{ proveedor }}</h2>
-        <ul>
-            {% for compra in compras %}
-                <li>{{ compra.producto.nombre }} - {{ compra.cantidad }} unidades</li>
-            {% endfor %}
-        </ul>
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h2 class="mb-0">{{ proveedor }}</h2>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    {% for compra in compras %}
+                        <li class="list-group-item">
+                            <span class="fw-bold">{{ compra.producto.nombre }}</span> - {{ compra.cantidad }} unidades
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
     {% endfor %}
-</body>
-</html>
+</div>
+</div>
+    <div>
+        <button id="btn-generate-pdf" class="btn btn-warning">Generar PDF</button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.debug.js"></script>
+
+
+    <script>
+        document.getElementById('btn-generate-pdf').addEventListener('click', function() {
+        const doc = new jsPDF();
+
+        const htmlContent = document.getElementById('contenido-pdf').innerHTML;
+        doc.fromHTML(htmlContent, 15, 15); // Puedes ajustar las coordenadas x e y según tus necesidades
+
+        doc.save('reporte_compras_por_proveedor.pdf');
+        });
+
+    </script>
+
+{% endblock %}

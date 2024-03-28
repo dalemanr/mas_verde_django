@@ -1,0 +1,43 @@
+{% extends "baseForms.html" %}
+
+{% block namePage %} Gestion de Devoluciones{% endblock %}
+
+{% block title %} Registrar una devolucion {% endblock %}
+
+{% block form %}
+{{ error }}
+<form action="{% url 'registarDevolucion' %}" method="POST">
+    {% csrf_token %}
+    {{ form }}
+    <button class="btn btn-outline-success">Guardar</button>
+</form>
+{% endblock %}
+
+{% block table_title %} Devoluciones {% endblock %}
+
+{% block table %}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Causa</th>
+            <th>fecha</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for d in devoluciones %}
+        <tr>
+            <td>{{ d.producto}}</td>
+            <td>{{ d.cantidad}}</td>
+            <td>{{ d.causa}}</td>
+            <td>{{ d.fecha_devolucion}}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+
+
+<a href="{% url 'reporteCompras' %}" class="btn btn-warning">Reporte de Compras por Proveedor</a>
+{% endblock %}
