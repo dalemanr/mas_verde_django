@@ -1,14 +1,14 @@
 from django import forms
 from django.forms import ModelForm
 
-from .models import *
+from perdidas.models import Perdida
 
-class DevolucionForm(ModelForm):
+
+class PerdidaForm(ModelForm):
     class Meta:
-        model = Devolucion
-        fields = ['cliente', 'producto', 'cantidad', 'causa']
+        model = Perdida
+        fields = ['producto', 'cantidad', 'causa']
         widgets = {
-            'cliente': forms.Select(attrs={'class': 'form-control'}),
             'cantidad': forms.NumberInput(attrs={'class': 'form-control'}),
             'causa': forms.TextInput(attrs={'class': 'form-control'}),
             'producto': forms.Select(attrs={'class': 'form-control'})

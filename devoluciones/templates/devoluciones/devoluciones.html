@@ -19,6 +19,7 @@
 <table class="table table-striped">
     <thead>
         <tr>
+            <th>Cliente</th>
             <th>Producto</th>
             <th>Cantidad</th>
             <th>Causa</th>
@@ -28,6 +29,7 @@
     <tbody>
     {% for d in devoluciones %}
         <tr>
+            <td>{{ d.cliente}}</td>
             <td>{{ d.producto}}</td>
             <td>{{ d.cantidad}}</td>
             <td>{{ d.causa}}</td>
@@ -38,6 +40,4 @@
 </table>
 
 
-
-<a href="{% url 'reporteCompras' %}" class="btn btn-warning">Reporte de Compras por Proveedor</a>
 {% endblock %}

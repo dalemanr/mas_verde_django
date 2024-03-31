@@ -29,7 +29,7 @@ urlpatterns = [
     path('pqrs/', include('pqrs.urls')),
     path('ventas/', include('ventas.urls')),
     path('contactos/', include('send_email.urls')),
-    #path('perdidas/', include('perdidas.urls')),
+    path('perdidas/', include('perdidas.urls')),
     path('devoluciones/', include('devoluciones.urls')),
     #paths de usuarios
     path('accounts/', include('django.contrib.auth.urls')),

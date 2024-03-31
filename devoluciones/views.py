@@ -19,10 +19,11 @@ def index(request):
 def registarDevolucion(request):
     if request.method == 'POST':
         producto = (request.POST["producto"])
+        cliente = (request.POST["cliente"])
         cantidad = int(request.POST["cantidad"])
         causa = (request.POST["causa"])
 
-        devolucion = Devolucion(producto_id=producto, cantidad=cantidad, causa=causa)
+        devolucion = Devolucion(producto_id=producto, cantidad=cantidad, causa=causa, cliente_id=cliente)
         producto = devolucion.producto
         producto.stock_disponible += cantidad
         producto.save()
