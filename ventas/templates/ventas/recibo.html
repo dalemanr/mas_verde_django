@@ -37,4 +37,8 @@
     <div class="text-center mt-4">
         <a class="btn btn-warning" href="{% url 'generar_pdf' venta.pk %}">Recibo en PDF</a>
     </div>
+    <div>
+        <a class="text-success btn btn-link btn-lg" href="{% url 'venta' %}">Registrar nueva venta</a>
+        <a class="text-success btn btn-link btn-lg" href="{% url 'lista_ventas' %}">Ir a lista de ventas</a>
+    </div>
 {% endblock %}

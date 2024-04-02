@@ -167,5 +167,5 @@ EMAIL_USE_TLS = True
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-ALLOWED_HOSTS = ['0018-186-31-209-224.ngrok-free.app', 'localhost', '127.0.0.1']
-CSRF_TRUSTED_ORIGINS = ['https://0018-186-31-209-224.ngrok-free.app', 'https://*.127.0.0.1']
+ALLOWED_HOSTS = ['f187-186-155-17-9.ngrok-free.app', 'localhost', '127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ['https://f187-186-155-17-9.ngrok-free.app', 'https://*.127.0.0.1']
