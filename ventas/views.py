@@ -101,7 +101,7 @@ def generar_pdf(request, venta_id):
     )
 
     if pisa_statuts.err:
-        return HttpResponse('Error al generar pdf', status=500)
+        return HttpResponse('Error al generar pdfss', status=500)
     enviar_correo_con_pdf(response.content, 'venta.pdf', venta.cliente.correo)
     return response
 
